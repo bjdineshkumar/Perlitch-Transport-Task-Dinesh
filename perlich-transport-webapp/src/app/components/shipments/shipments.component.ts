@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './shipments.component.html',
   styleUrl: './shipments.component.css'
 })
-export class ShipmentsComponent {
+
+export class ShipmentsComponent implements OnInit {
   shipments: any[] = [];
   isAuthenticated = false;
 
@@ -25,10 +26,17 @@ export class ShipmentsComponent {
   ) {}
 
   ngOnInit(): void {
-
+    this.authService.authStatus.subscribe(status => {
+      if (status !== this.isAuthenticated) {
+        this.isAuthenticated = status;
+        this.loadShipments();
+      }
+    });
     this.isAuthenticated = this.authService.isLoggedIn();
+    this.loadShipments();
+  }
 
-
+  loadShipments(): void {
     let endpoint = '';
     let headers = new HttpHeaders();
     
@@ -40,35 +48,43 @@ export class ShipmentsComponent {
       endpoint = 'https://pt.gda.one/api/tests/v1/shipments/share/list';
     }
 
-    // Fetch shipments from the appropriate API endpoint
     this.http.get<any>(endpoint, { headers })
-      .subscribe(response => {
-        console.log('Shipments API response:', response);
-        if (response && Array.isArray(response.items)) {
-          // Map the response to the structure expected by the template
-          this.shipments = response.items.map((item: any) => ({
-            id: item.id,
-            customer: item.customer,
-            pickupDate: item.pickup_date,
-            pickupLocation: item.pickup_location,
-            deliveryDate: item.delivery_date,
-            deliveryLocation: item.delivery_location,
-            distance: item.distance,
-            weight: item.weight,
-            status: item.status,
-            price: item.price,
-            progress: item.progress
-          }));
-        } else {
-          console.error('Unexpected response structure:', response);
+      .subscribe({
+        next: response => {
+          console.log('Shipments API response:', response);
+          if (response && Array.isArray(response.items)) {
+            this.shipments = response.items.map((item: any) => ({
+              id: item.id,
+              customer: item.customer,
+              pickupDate: item.pickup_date,
+              pickupLocation: item.pickup_location,
+              deliveryDate: item.delivery_date,
+              deliveryLocation: item.delivery_location,
+              distance: item.distance,
+              weight: item.weight,
+              status: item.status,
+              price: item.price,
+              progress: item.progress
+            }));
+          } else {
+            console.error('Unexpected response structure:', response);
+          }
+        },
+        error: err => {
+          console.error('Error fetching shipments:', err);
+          if (err.status === 401) {
+            this.isAuthenticated = false;
+            this.loadShipments();
+          }
         }
-      }, err => {
-        console.error('Error fetching shipments:', err);
       });
   }
 
-  // Update shipment status (remains unchanged)
+
   updateStatus(shipment: any, newStatus: string): void {
+    if (!this.isAuthenticated) {
+      return; 
+    }
     const url = `https://pt.gda.one/api/tests/v1/shipments/status?uuid=${shipment.id}`;
     const token = this.cookieService.get('authToken');
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
@@ -79,12 +95,23 @@ export class ShipmentsComponent {
           shipment.status = newStatus;
           console.log('Shipment status updated successfully.');
         },
-        error: err => console.error('Error updating shipment status:', err)
+        error: err => {
+          console.error('Error updating shipment status:', err);
+          if (err.status === 401) {
+            this.isAuthenticated = false;
+            this.loadShipments();
+          }
+        }
       });
   }
 
   onStatusChange(shipment: any, event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     this.updateStatus(shipment, selectElement.value);
+  }
+
+  refreshShipments(): void {
+    this.isAuthenticated = this.authService.isLoggedIn();
+    this.loadShipments();
   }
 }

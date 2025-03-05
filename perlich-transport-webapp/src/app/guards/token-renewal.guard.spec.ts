@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
-import { tokenRenewalGuard } from './token-renewal.guard';
+import { TokenRenewalGuard } from './token-renewal.guard';
 
 describe('tokenRenewalGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => tokenRenewalGuard(...guardParameters));
+      TestBed.runInInjectionContext(() => TokenRenewalGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

@@ -9,7 +9,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'contacts', pathMatch: 'full' },
   { path: 'contacts', component: ContactsComponent },
-  { path: 'shipments', component: ShipmentsComponent, canActivate: [AuthGuard] },
+  { path: 'shipments', component: ShipmentsComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

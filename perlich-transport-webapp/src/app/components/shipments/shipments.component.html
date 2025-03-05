@@ -1,37 +1,39 @@
-<div class="container">
-    <h2>Shipments</h2>
-    <table class="shipments-table">
-      <thead>
-        <tr>
-          <th>Pickup Date</th>
-          <th>Pickup Location</th>
-          <th>Delivery Date</th>
-          <th>Delivery Location</th>
-          <th>Distance</th>
-          <th *ngIf="isAuthenticated">Price</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let shipment of shipments">
-          <td>{{ shipment.pickupDate }}</td>
-          <td>{{ shipment.pickupLocation }}</td>
-          <td>{{ shipment.deliveryDate }}</td>
-          <td>{{ shipment.deliveryLocation }}</td>
-          <td>{{ shipment.distance }}</td>
-          <td *ngIf="isAuthenticated">{{ shipment.price }}</td>
-          <td>
-            <select *ngIf="isAuthenticated"
-                [(ngModel)]="shipment.status"
-                (change)="onStatusChange(shipment, $event)">
-                <option value="Shipped">Shipped</option>
-                <option value="Pending">Pending</option>
-                <option value="On route">On Route</option>
-                <option value="Delivered">Delivered</option>
+<div class="container mt-3">
+  <h2>Shipments</h2>
+  <button (click)="refreshShipments()" class="refresh-btn">Refresh</button>
+  <table class="shipments-table">
+    <thead>
+      <tr>
+        <th>Pickup Date</th>
+        <th>Pickup Location</th>
+        <th>Delivery Date</th>
+        <th>Delivery Location</th>
+        <th>Distance</th>
+        <th *ngIf="isAuthenticated">Price</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shipment of shipments">
+        <td>{{ shipment.pickupDate | date:'short' }}</td>
+        <td>{{ shipment.pickupLocation }}</td>
+        <td>{{ shipment.deliveryDate | date:'short' }}</td>
+        <td>{{ shipment.deliveryLocation }}</td>
+        <td>{{ shipment.distance }}</td>
+        <td *ngIf="isAuthenticated">{{ shipment.price }}</td>
+        <td>
+          <div *ngIf="isAuthenticated; else readOnlyStatus">
+            <select [(ngModel)]="shipment.status" (change)="onStatusChange(shipment, $event)">
+              <option value="New">New</option>
+              <option value="Pending">Pending</option>
+              <option value="Delivered">Delivered</option>
             </select>
-            <span *ngIf="!isAuthenticated">{{ shipment.status }}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </div>
+          <ng-template #readOnlyStatus>
+            <span>{{ shipment.status }}</span>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
