@@ -1,0 +1,12 @@
+<nav class="menu">
+    <ul class="list-unstyled">
+      <li>
+        <a routerLink="/contacts">Contact</a>
+      </li>
+      <!-- Show Shipments only if authenticated -->
+      <li *ngIf="isAuthenticated">
+        <a routerLink="/shipments">Shipments</a>
+      </li>
+    </ul>
+  </nav>
+  

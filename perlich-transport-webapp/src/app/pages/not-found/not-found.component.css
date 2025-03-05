@@ -1,0 +1,8 @@
+.not-found {
+    text-align: center;
+    margin: 2rem;
+  }
+  .not-found h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }

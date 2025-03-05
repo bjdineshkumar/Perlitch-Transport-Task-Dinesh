@@ -1,0 +1,28 @@
+.menu {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    margin: 0;
+  }
+  
+  .menu ul {
+    list-style-type: none;
+    display: flex;
+    /* Align items to the left */
+    justify-content: flex-start;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+  }
+  
+  .menu a:hover {
+    text-decoration: underline;
+  }
+  
+  

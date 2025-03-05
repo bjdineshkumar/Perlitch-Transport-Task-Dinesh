@@ -1,0 +1,7 @@
+<header>
+    <a routerLink="/contacts" class="company-name-link">
+        <h1 class="company-name">Perlitch Transport</h1>
+    </a>
+    <button *ngIf="!isSignedIn" (click)="openSignIn()" >Sign in</button>
+    <button *ngIf="isSignedIn" (click)="signOut()">Sign Out</button>
+</header>

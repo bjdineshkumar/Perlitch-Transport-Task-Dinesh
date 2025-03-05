@@ -1,0 +1,36 @@
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .company-name-link {
+    text-decoration: none; 
+    color: inherit;  
+    display: inline-block;  
+    cursor: pointer;        
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: #333;
+  }
+  
+  header button {
+    margin-left: auto; 
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  header button:hover {
+    background-color: #0056b3;
+  }
+  

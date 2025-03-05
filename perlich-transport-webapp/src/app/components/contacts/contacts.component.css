@@ -1,0 +1,56 @@
+.company-info-card {
+    display: flex;
+    background-color: #fff;
+    padding: 1.5rem 2rem;
+    margin: 2rem auto;
+    max-width: 1000px;              /* Make it wider if you want more horizontal space */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    margin-top: 200px;
+    align-content: center;
+  }
+  
+  /* Left text column takes ~60% of width */
+  .company-info-content {
+    flex: 0 0 60%;      /* or flex: 3 if using the ratio approach below */
+    margin-right: 1rem; 
+  }
+  
+  /* Right image column takes ~40% of width */
+  .company-info-image {
+    flex: 0 0 40%;      /* or flex: 2 if using ratio approach */
+    display: flex;      /* so we can center or align the image if needed */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Make the image fill the container while maintaining aspect ratio */
+  .company-info-image img {
+    width: 100%;       /* fill the container’s width */
+    height: auto;      /* maintain aspect ratio */
+    object-fit: cover; /* crops if the container is narrower than the image ratio */
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  @media (max-width: 768px) {
+    .company-info-card {
+      flex-direction: column;
+      align-items: center;
+    }
+    .company-info-content {
+      flex: 1;
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+    .company-info-image {
+      flex: 1;
+      width: 100%;
+    }
+    .company-info-image img {
+      width: 80%;  /* so it doesn't stretch too large on very narrow screens */
+      max-width: 400px;
+    }
+  }
+  
+  
